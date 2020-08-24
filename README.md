@@ -4,4 +4,5 @@ A repo containing solutions to Data Struture questions for cracking the Software
 ## Solved Questions
 <ol>
   <li>Median of Two Sorted rrays of Different Sizes</li>
+  <li>Merge Sort</li>
 </ol>
