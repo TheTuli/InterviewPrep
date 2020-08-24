@@ -1,12 +1,94 @@
+__author__ = 'rt3991@rit.edu'
+
 """
-    Median of two sorted arrays
-    example:
+    Median of two sorted arrays of different size
+    
+    There are three different approaches mentioned in this file:
+    
+    (1) Brute Force Approach
+            Time Complexity     : O( m + n )
+            Space Complexity    : O( m + n )
+        
+            GIST    : 
+                    
+                    > Merge both arrays into a third sorted array
+                    > Return the middle value
+    
+    (2) Brute Force Optimized
+            Time Complexity     : O( m + n )
+            Space Complexity    : O(1)
+        
+            GIST    : 
+                    
+                    > Find the index numbers(in the final) required for
+                      calculating the middle value
+                    > Find required elements without creating a third array
+                    > Return middle Value
 
-    >>> arr1 = [1, 2, 3]
-    >>> arr2 = [4, 5, 6]
-    >>> get_median(arr1, arr2)
-    3.5
-
+    (3) Binary Search
+            Time Complexity     : O( log( min(m, n) ))
+            Space Complexity    : O(1)
+            
+            IDEA    :
+            
+                    > Median always splits an array into two equally sized 
+                      halves
+                    > Left half is always less than the right half
+                    > Use binary search to find this perfect partition place
+            
+            CLEVER TRICK    :
+                    
+                    > Because we know the total length of the combined array, 
+                      we also know how many elements there will be in each half
+                      of the combined array (m + n) // 2
+                    
+                    > Therefore, instead of finding two partitions, 
+                      we test mid of the smaller array,
+                      and calculate the corresponding partition place in the 
+                      second array
+                      
+                      Second Partition Point    :
+                        > (m + n + 1) // 2 - first partition point
+                        
+                        (Here the +1 plays well for both odd and even length 
+                        arrays)
+                    
+                      This further reduces our time complexity to 
+                      O(log(min(m, n))) from O(log(m + n))
+                                    
+            GIST    : 
+                    > arr1 is the smaller array
+                    > low=0, high=len(arr1)
+                
+                    > while low <= high:
+                        > partition1 = mid of smaller arrray (low + high) // 2
+                        > calculate partition2
+                        
+                        > get boundary elements
+                        
+                        > if all_left_elements <= all_right_elements:
+                                # FOUND MEDIAN
+    
+                                # even case
+                                avg(max(left two), min(right two))
+                                
+                                # odd case
+                                 max(left two)
+                                
+                        > else if max_left_first > min_right_second:
+                                # Move left in first array
+                                high = partition - 1
+                        > else:
+                                low = partition + 1
+            
+            CAVEATS     :
+                        
+                        > If left array empty return -float('inf')
+                        > If right array empty return float('inf')
+                        
+                        > Make sure we are always making progress by changing                     
+                          low = partition - 1, and
+                          high = partition + 1
 """
 
 
@@ -224,7 +306,6 @@ def median_logarithmic(arr1, arr2):
     3.5
     >>> median_logarithmic([1, 2, 3], [4, 5, 6])
     3.5
-
     >>> median_logarithmic([1, 2, 3, 4, 5, 6, 7], [0, 0, 0, 0, 10, 10, 10])
     3.5
 
@@ -242,13 +323,11 @@ def median_logarithmic(arr1, arr2):
     len_first, len_second = len(arr1), len(arr2)
 
     low, high = 0, len_first
-    i = 0
+
     while low <= high:
 
-        i += 1
         partition_first = (low + high) // 2
         partition_second = (len_first + len_second + 1) // 2 - partition_first
-
 
         max_left_first, max_left_second = max_left(arr1, partition_first), \
                                           max_left(arr2, partition_second)
@@ -272,8 +351,6 @@ def median_logarithmic(arr1, arr2):
 
             low = partition_first + 1
 
-        if i == 10:
-            break
     return "NOT FOUND"
 
 
