@@ -3,7 +3,7 @@ __author__ = "rt3991@rit.edu"
 """
     Merge Sort(Not in place)
     
-    (1) Brute Force Approach
+    (1) Divide and conquer Algorithm
             Time Complexity     : O( nlog(n) )
             Space Complexity    : O( nlog(n) )
         
